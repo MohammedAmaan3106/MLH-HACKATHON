@@ -1,3 +1,19 @@
+const path = require('path');
+const fs = require('fs');
+
+// 1. Check server/.env
+const serverEnv = path.resolve(__dirname, '../../.env');
+if (fs.existsSync(serverEnv)) {
+  require('dotenv').config({ path: serverEnv });
+}
+
+// 2. Check root .env
+const rootEnv = path.resolve(__dirname, '../../../.env');
+if (fs.existsSync(rootEnv)) {
+  require('dotenv').config({ path: rootEnv });
+}
+
+// 3. Fallback standard CWD .env
 require('dotenv').config();
 
 module.exports = {
