@@ -111,8 +111,7 @@ MLH-HACKATHON/
 ├── .gitignore                  # Security-first Git exclusions (.env, node_modules)
 ├── package.json               # Root workspace scripts
 ├── README.md                  # Comprehensive project documentation
-├── dummy samples/             # Sample recorded Instagram webm test audio
-├── reel-audio-tester/         # Chrome Extension (Manifest V3)
+├── reelsidian-extension/      # Chrome Extension (Manifest V3)
 │   ├── manifest.json          # Extension configuration & permissions
 │   ├── popup.html             # Obsidian glass popup dialog UI
 │   ├── popup.css              # Styled equalizer animations & theme tokens
@@ -208,7 +207,7 @@ MLH-HACKATHON/
 1. Open Google Chrome and enter `chrome://extensions/` in the URL bar.
 2. Toggle on **Developer mode** in the top-right corner.
 3. Click **Load unpacked** in the top-left corner.
-4. Select the `reel-audio-tester/` folder from this project directory.
+4. Select the `reelsidian-extension/` folder from this project directory.
 5. Pin **Reelsidian Audio Grabber** to your Chrome toolbar.
 
 ---
