@@ -1,5 +1,5 @@
 /**
- * ReelMind Real-Time Engine Entry Point
+ * Reelsidian Real-Time Engine Entry Point
  */
 
 const express = require('express');
@@ -26,7 +26,7 @@ app.get('/', (req, res) => {
 // Start Server
 app.listen(PORT, () => {
   console.log(`\n======================================================`);
-  console.log(`🚀 ReelMind Real-Time Engine active at http://localhost:${PORT}`);
+  console.log(`🚀 Reelsidian Real-Time Engine active at http://localhost:${PORT}`);
   console.log(`✨ Ephemeral RAM pipeline: Zero disk storage, maximum privacy.`);
   console.log(`📡 SSE Stream: http://localhost:${PORT}/api/events`);
   console.log(`======================================================\n`);

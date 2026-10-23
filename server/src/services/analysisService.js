@@ -31,7 +31,7 @@ function buildEducationalPrompt(transcript, caption, url) {
     contextDescription = `Short educational reel on social media (${url || 'No link'}). Extract high-yield learning insights.`;
   }
 
-  return `You are ReelMind, an expert educational intelligence engine transforming video transcripts into comprehensive, high-value study reports.
+  return `You are Reelsidian, an expert educational intelligence engine transforming video transcripts into comprehensive, high-value study reports.
 
 Analyze this Reel content carefully:
 ${contextDescription}
@@ -113,7 +113,7 @@ async function callOpenRouter(model, apiKey, prompt, fallbackContext = '') {
         Authorization: `Bearer ${apiKey}`,
         'Content-Type': 'application/json',
         'HTTP-Referer': `http://localhost:${PORT}`,
-        'X-Title': 'ReelMind Educational Engine'
+        'X-Title': 'Reelsidian Educational Engine'
       },
       body: JSON.stringify({
         model: model,

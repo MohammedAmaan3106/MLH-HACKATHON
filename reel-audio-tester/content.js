@@ -1,4 +1,4 @@
-// ReelMind Content Script: Intelligent short-form video metadata extractor
+// Reelsidian Content Script: Intelligent short-form video metadata extractor
 // Supports Instagram Reels, YouTube Shorts, and generic HTML5 video pages.
 
 const NON_PROFILE_PATHS = new Set([

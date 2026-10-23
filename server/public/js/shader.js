@@ -1,5 +1,5 @@
 /**
- * ReelMind Fluted Glass WebGL Background Shader (Three.js)
+ * Reelsidian Fluted Glass WebGL Background Shader (Three.js)
  * Implements:
  * - Transparent optical glass ribs (dynamic Fresnel + caustics)
  * - Fluid organic lower waves with obsidian, copper, ivory, and petrol navy tones

@@ -1,5 +1,5 @@
 /**
- * ReelMind Dashboard Application Logic
+ * Reelsidian Dashboard Application Logic
  * Formats reports matching the notebook layout:
  * 1. Audio Player Preview
  * 2. ElevenLabs Verbatim Transcript Box
@@ -231,7 +231,7 @@ function exportAnki(cardId) {
   }
 
   const tsv = flashcards
-    .map((fc) => `${fc.question.replace(/\t/g, ' ')}\t${fc.answer.replace(/\t/g, ' ')}\tReelMind`)
+    .map((fc) => `${fc.question.replace(/\t/g, ' ')}\t${fc.answer.replace(/\t/g, ' ')}\tReelsidian`)
     .join('\n');
 
   const blob = new Blob([tsv], { type: 'text/tab-separated-values;charset=utf-8;' });

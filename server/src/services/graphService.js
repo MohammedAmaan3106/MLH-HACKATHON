@@ -103,7 +103,7 @@ Output strictly valid JSON with this exact schema:
           Authorization: `Bearer ${OPENROUTER_API_KEY}`,
           'Content-Type': 'application/json',
           'HTTP-Referer': `http://localhost:${PORT}`,
-          'X-Title': 'ReelMind Knowledge Graph'
+          'X-Title': 'Reelsidian Knowledge Graph'
         },
         body: JSON.stringify({
           model: PRIMARY_MODEL,

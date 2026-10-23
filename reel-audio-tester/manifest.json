@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "ReelMind Audio Grabber",
-  "version": "1.1",
-  "description": "Capture clean audio and real metadata directly from Instagram Reels and YouTube Shorts",
+  "name": "Reelsidian Audio Grabber",
+  "version": "1.2",
+  "description": "Obsidian for Reels: Capture clean audio and metadata directly from Instagram Reels and YouTube Shorts",
   "permissions": [
     "tabCapture",
     "offscreen",
@@ -17,7 +17,7 @@
   ],
   "action": {
     "default_popup": "popup.html",
-    "default_title": "ReelMind Audio Grabber"
+    "default_title": "Reelsidian Audio Grabber"
   },
   "background": {
     "service_worker": "background.js"

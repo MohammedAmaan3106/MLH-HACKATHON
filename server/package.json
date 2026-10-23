@@ -1,7 +1,7 @@
 {
-  "name": "reelmind-server",
+  "name": "reelsidian-server",
   "version": "1.0.0",
-  "description": "Backend API for ReelMind audio transcription and knowledge extraction",
+  "description": "Backend API for Reelsidian audio transcription and knowledge graph synthesis",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"

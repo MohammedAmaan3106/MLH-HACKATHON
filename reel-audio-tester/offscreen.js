@@ -1,4 +1,4 @@
-// Offscreen Audio Recording Engine for ReelMind
+// Offscreen Audio Recording Engine for Reelsidian
 const BACKEND_URL = 'http://localhost:5000/api/process';
 
 let mediaRecorder = null;
@@ -37,10 +37,10 @@ async function sendToBackend(blob) {
     const res = await fetch(BACKEND_URL, { method: 'POST', body: formData });
     const body = await res.json().catch(() => ({}));
     if (res.ok) {
-      console.log('Sent to ReelMind Engine:', body);
+      console.log('Sent to Reelsidian Engine:', body);
       return { 
         result: 'sent', 
-        message: 'Audio sent to ReelMind website!', 
+        message: 'Audio sent to Reelsidian website!', 
         title: body?.result?.analysis?.title || 'Processed Reel' 
       };
     }
@@ -48,7 +48,7 @@ async function sendToBackend(blob) {
     return { result: 'rejected', message: body.error || 'Server rejected recording.' };
   } catch (err) {
     console.warn('Backend unreachable:', err.message);
-    return { result: 'offline', message: 'ReelMind server offline (http://localhost:5000).' };
+    return { result: 'offline', message: 'Reelsidian server offline (http://localhost:5000).' };
   }
 }
 

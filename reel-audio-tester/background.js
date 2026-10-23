@@ -1,4 +1,4 @@
-// Background Service Worker for ReelMind Audio Grabber
+// Background Service Worker for Reelsidian Audio Grabber
 let state = {
   isRecording: false,
   status: 'idle', // 'idle' | 'recording' | 'processing' | 'completed' | 'error'
@@ -134,7 +134,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     state.status = 'completed';
     state.lastResult = {
       result: message.result || 'sent',
-      message: message.message || 'Audio sent to ReelMind website!',
+      message: message.message || 'Audio sent to Reelsidian website!',
       title: message.title || '',
       creator: message.creator || '',
       timestamp: Date.now()

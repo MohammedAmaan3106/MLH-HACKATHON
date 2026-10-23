@@ -1,4 +1,4 @@
-// ReelMind Extension Popup Script
+// Reelsidian Extension Popup Script
 // Coordinates capture start/stop, real-time equalizer loader, and status reporting
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -100,12 +100,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     tabLabel.textContent = 'Active Tab';
   }
 
-  // 2. Ping ReelMind backend status
+  // 2. Ping Reelsidian backend status
   try {
     const pingRes = await fetch('http://localhost:5000/api/graph', { method: 'GET', signal: AbortSignal.timeout(2000) });
     if (pingRes.ok) {
       serverDot.classList.remove('offline');
-      serverStatusText.textContent = 'ReelMind Server (Online)';
+      serverStatusText.textContent = 'Reelsidian Server (Online)';
     } else {
       serverDot.classList.add('offline');
       serverStatusText.textContent = 'Server (Port 5000)';
@@ -145,7 +145,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (res.result === 'sent') {
       completedTitle.textContent = 'Audio Sent to Website!';
       completedTitle.className = 'state-title text-success';
-      completedDesc.textContent = res.message || 'The audio was dispatched to ReelMind and is being transcribed & analyzed.';
+      completedDesc.textContent = res.message || 'The audio was dispatched to Reelsidian and is being transcribed & analyzed.';
     } else if (res.result === 'duplicate') {
       completedTitle.textContent = 'Duplicate Audio';
       completedTitle.className = 'state-title';
