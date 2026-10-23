@@ -1,0 +1,9 @@
+{
+  "name": "mlh-hackathon-workspace",
+  "version": "1.0.0",
+  "description": "Root workspace runner",
+  "scripts": {
+    "start": "cd server && npm start",
+    "dev": "cd server && npm start"
+  }
+}
