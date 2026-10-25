@@ -13,7 +13,7 @@ require('dotenv').config();
 module.exports = {
   PORT: process.env.PORT || 5000,
   GEMINI_API_KEY: (process.env.GEMINI_API_KEY || process.env.GOOGLE_AI_KEY || process.env.GOOGLE_API_KEY || '').trim(),
-  GOOGLE_GEMMA_MODELS: ['models/gemini-2.5-flash'],
+  GOOGLE_GEMMA_MODELS: ['gemini-3.8-flash'],
   PRIMARY_MODEL: process.env.OPENROUTER_MODEL || 'google/gemma-3-27b-it:free',
   CANDIDATE_MODELS: [
     process.env.OPENROUTER_MODEL || 'google/gemma-3-27b-it:free',
