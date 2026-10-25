@@ -13,11 +13,12 @@ require('dotenv').config();
 module.exports = {
   PORT: process.env.PORT || 5000,
   GEMINI_API_KEY: (process.env.GEMINI_API_KEY || process.env.GOOGLE_AI_KEY || process.env.GOOGLE_API_KEY || '').trim(),
-  GOOGLE_GEMMA_MODELS: ['gemini-3.8-flash'],
-  PRIMARY_MODEL: process.env.OPENROUTER_MODEL || 'google/gemma-3-27b-it:free',
+  // Official Google AI Studio Gemma 4 model ID.
+  GOOGLE_GEMMA_MODELS: ['gemma-4-26b-a4b-it'],
+  PRIMARY_MODEL: process.env.OPENROUTER_MODEL || 'google/gemma-4-26b-a4b-it:free',
   CANDIDATE_MODELS: [
-    process.env.OPENROUTER_MODEL || 'google/gemma-3-27b-it:free',
-    'google/gemma-3-12b-it:free'
+    process.env.OPENROUTER_MODEL || 'google/gemma-4-26b-a4b-it:free',
+    'google/gemma-4-31b-it:free'
   ],
   ELEVENLABS_API_KEY: (process.env.ELEVENLABS_API_KEY || '').trim(),
   OPENROUTER_API_KEY: (process.env.OPENROUTER_API_KEY || '').trim(),
