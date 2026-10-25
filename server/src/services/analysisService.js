@@ -171,7 +171,8 @@ async function analyzeContent(transcript, caption, url) {
   const prompt = buildEducationalPrompt(transcript, caption, url);
   const fallbackContext = transcript || caption || 'Educational video insights';
 
-  // Pathway 1: Google AI Studio SDK (Direct Gemma 4)
+  // Pathway 1: Google AI Studio SDK (Direct Gemini API)
+  let googleAIError = null;
   if (GEMINI_API_KEY && GEMINI_API_KEY.trim()) {
     console.log('⚡ Using Google AI Studio SDK with direct Google Gemma 4 models...');
     for (const modelName of GOOGLE_GEMMA_MODELS) {
@@ -181,7 +182,8 @@ async function analyzeContent(transcript, caption, url) {
         console.log(`✅ Success via Google AI Studio SDK: ${result.model}`);
         return result;
       } catch (err) {
-        console.warn(`⚠️ Google AI Studio (${modelName}) notice: ${err.message}. Trying next Gemma 4 model...`);
+        googleAIError = err;
+        console.warn(`⚠️ Google AI Studio (${modelName}) failed: ${err.message}`);
         await new Promise((resolve) => setTimeout(resolve, 1500));
       }
     }
@@ -191,7 +193,10 @@ async function analyzeContent(transcript, caption, url) {
 
   // Pathway 2: OpenRouter Google Gemma 4 (Strictly Gemma 4 models only)
   if (!OPENROUTER_API_KEY || !OPENROUTER_API_KEY.trim()) {
-    throw new Error('Please set either GEMINI_API_KEY or OPENROUTER_API_KEY in server/.env');
+    if (googleAIError) {
+      throw new Error(`Gemini API request failed: ${googleAIError.message}. Check that GEMINI_API_KEY is valid and the selected model is enabled for your key.`);
+    }
+    throw new Error('No AI provider key detected. Set GEMINI_API_KEY in Vercel Production Environment Variables, then redeploy.');
   }
 
   let lastError = null;
