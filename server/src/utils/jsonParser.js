@@ -1,75 +1,80 @@
 /**
- * Resilient JSON Parser for LLM Outputs
- * Accurately extracts JSON blocks produced by reasoning models (like Gemma 4 MoE)
- * Zero hardcoded fallback strings. Pure authentic model parsing.
+ * Resilient JSON parser for LLM outputs.
+ * Repairs common invalid escape sequences and control characters inside JSON strings.
  */
 
 function cleanJsonString(str) {
   if (!str || typeof str !== 'string') return '';
 
-  // 1. If markdown code fences exist, reasoning models place their final answer in the LAST code block!
   const codeBlocks = str.match(/```(?:json)?\s*([\s\S]*?)\s*```/gi);
-  if (codeBlocks && codeBlocks.length > 0) {
-    const lastBlock = codeBlocks[codeBlocks.length - 1];
-    let candidate = lastBlock.replace(/```(?:json)?/gi, '').replace(/```/g, '').trim();
-    const start = candidate.indexOf('{');
-    const end = candidate.lastIndexOf('}');
-    if (start !== -1 && end !== -1) {
-      let cleaned = candidate.slice(start, end + 1);
-      cleaned = cleaned.replace(/,\s*([}\]])/g, '$1'); // remove trailing commas
-      cleaned = cleaned.replace(/^\s*\/\/.*$/gm, '');        // remove full-line comments safely
-      return cleaned;
-    }
+  if (codeBlocks?.length) {
+    const lastBlock = codeBlocks[codeBlocks.length - 1]
+      .replace(/```(?:json)?/gi, '')
+      .replace(/```/g, '')
+      .trim();
+    const start = lastBlock.indexOf('{');
+    const end = lastBlock.lastIndexOf('}');
+    if (start !== -1 && end > start) return lastBlock.slice(start, end + 1);
   }
 
-  // 2. Otherwise, look for the JSON object in the entire string
-  const start = str.lastIndexOf('{\n  "title"');
-  const actualStart = start !== -1 ? start : str.indexOf('{');
+  const startMarker = str.lastIndexOf('{\n  "title"');
+  const start = startMarker !== -1 ? startMarker : str.indexOf('{');
   const end = str.lastIndexOf('}');
-  if (actualStart === -1 || end === -1 || actualStart >= end) {
-    return '';
-  }
-
-  let cleaned = str.slice(actualStart, end + 1);
-  cleaned = cleaned.replace(/,\s*([}\]])/g, '$1');
-  cleaned = cleaned.replace(/^\s*\/\/.*$/gm, '');
-  return cleaned;
+  if (start === -1 || end <= start) return '';
+  return str.slice(start, end + 1);
 }
 
-// Correctly sanitizes unescaped control characters inside quoted string literals only
-function sanitizeStringLiterals(str) {
+function sanitizeStringLiterals(input) {
+  let output = '';
   let inString = false;
-  let escaped = false;
-  let out = '';
 
-  for (let i = 0; i < str.length; i++) {
-    const char = str[i];
-    if (char === '"' && !escaped) {
-      inString = !inString;
-      out += char;
-    } else if (char === '\\' && !escaped) {
-      escaped = true;
-      out += char;
-    } else {
-      if (inString) {
-        if (char === '\n') {
-          out += '\\n';
-        } else if (char === '\r') {
-          out += '\\r';
-        } else if (char === '\t') {
-          out += '\\t';
-        } else if (char.charCodeAt(0) < 32) {
-          // ignore unprintable control characters inside string
-        } else {
-          out += char;
-        }
-      } else {
-        out += char;
-      }
-      escaped = false;
+  for (let i = 0; i < input.length; i++) {
+    const ch = input[i];
+
+    if (!inString) {
+      output += ch;
+      if (ch === '"') inString = true;
+      continue;
     }
+
+    if (ch === '"') {
+      output += ch;
+      inString = false;
+      continue;
+    }
+
+    if (ch === '\\') {
+      const next = input[i + 1];
+      if (next === undefined) {
+        output += '\\\\';
+        continue;
+      }
+
+      // Keep valid JSON escapes; escape stray backslashes (e.g. Windows paths or regexes).
+      if ('"\\/bfnrt'.includes(next)) {
+        output += ch + next;
+        i++;
+        continue;
+      }
+      if (next === 'u' && /^[0-9a-fA-F]{4}$/.test(input.slice(i + 2, i + 6))) {
+        output += input.slice(i, i + 6);
+        i += 5;
+        continue;
+      }
+
+      output += '\\\\';
+      continue;
+    }
+
+    const code = ch.charCodeAt(0);
+    if (ch === '\n') output += '\\n';
+    else if (ch === '\r') output += '\\r';
+    else if (ch === '\t') output += '\\t';
+    else if (code < 32) continue;
+    else output += ch;
   }
-  return out;
+
+  return output;
 }
 
 function robustParseJSON(rawText) {
@@ -78,26 +83,17 @@ function robustParseJSON(rawText) {
   }
 
   const cleaned = cleanJsonString(rawText);
+  if (!cleaned) throw new Error('No valid JSON object found in model output.');
 
-  if (!cleaned) {
-    throw new Error('No valid JSON object found in model output.');
-  }
-
-  // Pass 1: Direct clean parse
   try {
     return JSON.parse(cleaned);
-  } catch (err1) {
-    // Pass 2: Sanitize control characters inside string literals only
+  } catch (firstError) {
     try {
-      const sanitized = sanitizeStringLiterals(cleaned);
-      return JSON.parse(sanitized);
-    } catch (err2) {
-      throw new Error(`Failed to parse model JSON: ${err1.message}`);
+      return JSON.parse(sanitizeStringLiterals(cleaned));
+    } catch {
+      throw new Error(`Failed to parse model JSON: ${firstError.message}`);
     }
   }
 }
 
-module.exports = {
-  cleanJsonString,
-  robustParseJSON
-};
+module.exports = { cleanJsonString, robustParseJSON };
